@@ -3,6 +3,10 @@ const { Schema } = mongoose;
 
 const notesSchema = new Schema(
     {
+        user: {
+            type: mongoose.Schema.Types.ObjectId, //to make foreign key of user and put a reference of user model
+            ref: 'user'
+        },
         title: {
             type: String,
             required: true

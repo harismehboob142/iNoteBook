@@ -8,10 +8,12 @@ var secret = "This is business";
 var fetchuser = require('../middleware/fetchuser')
 
 // ROUTE 1
-// create a user using : POST "/api/auth" doesn't requires Login
+// create a user using : POST "/api/auth/createUser" doesn't requires Login
 router.post('/createUser',
     //checking for validations 
-    [body('name', 'Enter valid name').isLength({ min: 3 }), body('email', 'Enter valid email').isEmail(), body('password', 'Password must be 5 characters long').isLength({ min: 5 })],
+    [body('name', 'Enter valid name').isLength({ min: 3 }), 
+    body('email', 'Enter valid email').isEmail(), 
+    body('password', 'Password must be 5 characters long').isLength({ min: 5 })],
     async (req, res) => {
         // checking if any error occurs in validation
         const errors = validationResult(req);
