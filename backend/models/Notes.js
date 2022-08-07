@@ -25,4 +25,4 @@ const notesSchema = new Schema(
         }
     }
 )
-module.exports = mongoose.model('notes', notesSchema)
+module.exports = mongoose.model('notes', notesSchema) //notes is the name of collection to be created in database

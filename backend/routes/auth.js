@@ -11,8 +11,8 @@ var fetchuser = require('../middleware/fetchuser')
 // create a user using : POST "/api/auth/createUser" doesn't requires Login
 router.post('/createUser',
     //checking for validations 
-    [body('name', 'Enter valid name').isLength({ min: 3 }), 
-    body('email', 'Enter valid email').isEmail(), 
+    [body('name', 'Enter valid name').isLength({ min: 3 }),
+    body('email', 'Enter valid email').isEmail(),
     body('password', 'Password must be 5 characters long').isLength({ min: 5 })],
     async (req, res) => {
         // checking if any error occurs in validation
@@ -30,6 +30,8 @@ router.post('/createUser',
             const salt = await bcrypt.genSalt(10);
             const secPassword = await bcrypt.hash(req.body.password, salt);
             // creating a new user with User.create and putting its data in user
+
+            // const { name, email } = req.body; //alternate scenario
             user = await User.create({
                 name: req.body.name,
                 email: req.body.email,
@@ -45,7 +47,7 @@ router.post('/createUser',
         }
 
         catch (error) {
-            console.error = error.message;
+            console.error(error.message);
             res.status(500).send("some error occurred in signup");
         }
 
@@ -78,7 +80,7 @@ router.post('/login', [body('email', 'Enter valid email').isEmail(), body('passw
             res.json({ "authToken": authToken });
         }
         catch (error) {
-            console.error = error.message;
+            console.error(error.message);
             res.status(500).send("some error occurred in login");
         }
 
