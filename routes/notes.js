@@ -10,6 +10,7 @@ router.get('/fetchNotes', fetchuser, async (req, res) => {
     try {
         const notes = await Notes.find({ user: req.user.id })  //will check for data in Notes (db) according to the user.id. if found return notes.
         res.json(notes);
+        // 
     } catch (error) {
         console.error(error.message);
         res.status(400).send({ error: "Error in fetchNotes Route" })
