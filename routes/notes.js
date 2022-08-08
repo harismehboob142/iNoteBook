@@ -15,10 +15,10 @@ router.get('/fetchNotes', fetchuser, async (req, res) => {
         res.status(400).send({ error: "Error in fetchNotes Route" })
 
     }
-
 })
 
 //ROUTE 2 Adding notes : POST "/api/notes/addNotes" requires Login
+// validations using fetchuser
 
 router.post('/addNotes', fetchuser,
     [body('title', 'Title too short').isLength({ min: 3 }),
