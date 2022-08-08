@@ -36,6 +36,7 @@ router.post('/addNotes', fetchuser,
             const savedNote = await note.save();
             res.json(savedNote);
         }
+        // 
         catch (error) {
             console.error(error.message);
             res.status(400).send({ error: "Error in fetchNotes Route" })
