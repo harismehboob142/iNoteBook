@@ -1,55 +1,41 @@
 import { useState } from 'react';
 import NoteContext from './NoteContext';
 const NoteState = (props) => {
-    const initialNotes = [{
-        "_id": "62f0ca0074d056b38bf54fd5",
-        "user": "62ee87e80e85fe1c81f64379",
-        "title": "Process of creating new website (Mern Stack)",
-        "description": "This is the demo description for process of creating a new website using MERN stack",
-        "tag": "development",
-        "date": "2022-08-08T08:32:00.091Z",
-        "__v": 0
-    },
-    {
-        "_id": "62f0ca0074d056b38bf54fd7",
-        "user": "62ee87e80e85fe1c81f64379",
-        "title": "Process of creating new website (Mern Stack)",
-        "description": "This is the demo description for process of creating a new website using MERN stack",
-        "tag": "development",
-        "date": "2022-08-08T08:32:00.250Z",
-        "__v": 0
-    },
-    {
-        "_id": "62f0ca0074d056b38bf54fd9",
-        "user": "62ee87e80e85fe1c81f64379",
-        "title": "Process of creating new website (Mern Stack)",
-        "description": "This is the demo description for process of creating a new website using MERN stack",
-        "tag": "development",
-        "date": "2022-08-08T08:32:00.415Z",
-        "__v": 0
-    },
-    {
-        "_id": "62f0ca0074d056b38bf54fdb",
-        "user": "62ee87e80e85fe1c81f64379",
-        "title": "Process of creating new website (Mern Stack)",
-        "description": "This is the demo description for process of creating a new website using MERN stack",
-        "tag": "development",
-        "date": "2022-08-08T08:32:00.574Z",
-        "__v": 0
-    },
-    {
-        "_id": "62f0ca0074d056b38bf54fdd",
-        "user": "62ee87e80e85fe1c81f64379",
-        "title": "updated title",
-        "description": "updated description",
-        "tag": "updated_tag",
-        "date": "2022-08-08T08:32:00.722Z",
-        "__v": 0
-    }]
+    const host = "http://localhost:5000"
+    const initialNotes = []
+
+    // Get all note
+    const getNotes = async () => {
+        const response = await fetch(`${host}/api/notes/fetchNotes`, {
+            method: 'GET', // *GET, POST, PUT, DELETE, etc.
+
+            headers: {
+                'Content-Type': 'application/json',
+                'auth-token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjJlZTg3ZTgwZTg1ZmUxYzgxZjY0Mzc5In0sImlhdCI6MTY1OTk0NzQ3OH0.kMfKAbPlHbyH4f5uJpEpkqgcBAUhyWClRp5ozf6kFTc'
+            }
+        });
+        const json = await response.json();
+        // console.log(json);
+        setNotes(json);
+
+    }
 
     // Add a note
-    const addNote = (title, description, tag) => {
+    const addNote = async (title, description, tag) => {
         // todo api calls
+        const response = await fetch(`${host}/api/notes/addNotes`, {
+            method: 'PUT', // *GET, POST, PUT, DELETE, etc.
+
+            headers: {
+                'Content-Type': 'application/json',
+                'auth-token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjJlZTg3ZTgwZTg1ZmUxYzgxZjY0Mzc5In0sImlhdCI6MTY1OTk0NzQ3OH0.kMfKAbPlHbyH4f5uJpEpkqgcBAUhyWClRp5ozf6kFTc'
+                // 'Content-Type': 'application/x-www-form-urlencoded',
+            },
+
+            body: JSON.stringify(title, description, tag) // body data type must match "Content-Type" header
+        });
+
+        //client side logic
         console.log("Adding a new note");
         const note = {
             "_id": "62f0casdfad074d056b38bf54fdg",
@@ -64,17 +50,41 @@ const NoteState = (props) => {
     }
     // Delete a note
     const deleteNote = (id) => {
+
+        // client side logic
         console.log("delete note id# " + id)
         const newNotes = notes.filter((note) => { return note._id !== id })
         setNotes(newNotes)
     }
     // Edit a note
-    const editNote = (id, title, description, tag) => {
+    const editNote = async (id, title, description, tag) => {
+        // api calls
+        const response = await fetch(`${host}/api/notes/updateNotes/${id}`, {
+            method: 'PUT', // *GET, POST, PUT, DELETE, etc.
 
+            headers: {
+                'Content-Type': 'application/json',
+                'auth-token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjJlZTg3ZTgwZTg1ZmUxYzgxZjY0Mzc5In0sImlhdCI6MTY1OTk0NzQ3OH0.kMfKAbPlHbyH4f5uJpEpkqgcBAUhyWClRp5ozf6kFTc'
+                // 'Content-Type': 'application/x-www-form-urlencoded',
+            },
+
+            body: JSON.stringify({ title, description, tag }) // body data type must match "Content-Type" header
+        });
+        const json = response.json();
+        // client side logic
+        for (let index = 0; index < notes.length; index++) {
+            const element = notes[index];
+            if (element._id === id) {
+                element.title = title;
+                element.description = description;
+                element.tag = tag;
+            }
+
+        }
     }
     const [notes, setNotes] = useState(initialNotes);
     return (
-        <NoteContext.Provider value={{ notes, addNote, deleteNote, editNote }}>
+        <NoteContext.Provider value={{ notes, addNote, deleteNote, editNote, getNotes }}>
             {props.children}
         </NoteContext.Provider>
 

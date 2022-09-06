@@ -7,6 +7,7 @@ const AddNote = () => {
     const context = useContext(NoteContext);
     const { addNote } = context;
     const [note, setNote] = useState({ title: "", description: "", tag: "default" })
+    
     const handleOnClick = (event) => {
         event.preventDefault();
         addNote(note.title, note.description, note.tag);
