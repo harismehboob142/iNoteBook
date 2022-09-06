@@ -11,6 +11,10 @@ const Notes = () => {
     useEffect(() => {
         getNotes();
     }, [])
+    
+    const updateNote = (note) => {
+        
+    }
 
     return (
         <>
@@ -19,7 +23,7 @@ const Notes = () => {
                 <h2>Your notes</h2>
                 {
                     notes.map((note) => {
-                        return <Noteitem key={note._id} note={note} />;
+                        return <Noteitem key={note._id} updateNote = {updateNote} note={note} />;
                     })
                 }
             </div>

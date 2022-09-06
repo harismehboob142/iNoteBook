@@ -24,21 +24,20 @@ const NoteState = (props) => {
     const addNote = async (title, description, tag) => {
         // todo api calls
         const response = await fetch(`${host}/api/notes/addNotes`, {
-            method: 'PUT', // *GET, POST, PUT, DELETE, etc.
+            method: 'POST', // *GET, POST, PUT, DELETE, etc.
 
             headers: {
                 'Content-Type': 'application/json',
                 'auth-token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjJlZTg3ZTgwZTg1ZmUxYzgxZjY0Mzc5In0sImlhdCI6MTY1OTk0NzQ3OH0.kMfKAbPlHbyH4f5uJpEpkqgcBAUhyWClRp5ozf6kFTc'
-                // 'Content-Type': 'application/x-www-form-urlencoded',
             },
 
-            body: JSON.stringify(title, description, tag) // body data type must match "Content-Type" header
+            body: JSON.stringify({ title, description, tag }) // body data type must match "Content-Type" header
         });
 
         //client side logic
         console.log("Adding a new note");
         const note = {
-            "_id": "62f0casdfad074d056b38bf54fdg",
+            "_id": "63179813cc0fa8fa28ea053f",
             "user": "62ee87e80e85fe1c81f64379",
             "title": title,
             "description": description,
@@ -49,8 +48,19 @@ const NoteState = (props) => {
         setNotes(notes.concat(note))
     }
     // Delete a note
-    const deleteNote = (id) => {
+    const deleteNote = async (id) => {
+        // api call
+        const response = await fetch(`${host}/api/notes/deleteNotes/${id}`, {
+            method: 'DELETE', // *GET, POST, PUT, DELETE, etc.
 
+            headers: {
+                'Content-Type': 'application/json',
+                'auth-token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjJlZTg3ZTgwZTg1ZmUxYzgxZjY0Mzc5In0sImlhdCI6MTY1OTk0NzQ3OH0.kMfKAbPlHbyH4f5uJpEpkqgcBAUhyWClRp5ozf6kFTc'
+                // 'Content-Type': 'application/x-www-form-urlencoded',
+            }
+        });
+        const json = response.json();
+        console.log(json);
         // client side logic
         console.log("delete note id# " + id)
         const newNotes = notes.filter((note) => { return note._id !== id })
