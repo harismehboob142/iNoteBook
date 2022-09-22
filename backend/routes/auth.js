@@ -1,11 +1,11 @@
 const express = require('express');
-const router = express.Router();
+const router = express.Router();        //making this a router, router is a mini application
 const User = require('../models/User');
-const { body, validationResult } = require('express-validator');
+const { body, validationResult } = require('express-validator'); //express validator to validate inputs
 const bcrypt = require('bcryptjs')
-const jwt = require('jsonwebtoken');
-var secret = "This is business";
-var fetchuser = require('../middleware/fetchuser')
+const jwt = require('jsonwebtoken');    //javascript web token to authenticate users
+var secret = "This is business";        //secret for salting the jwt token
+var fetchuser = require('../middleware/fetchuser')     //middleware to fetch specific user from database for validation
 
 // ROUTE 1
 // create a user using : POST "/api/auth/createUser" doesn't requires Login
@@ -13,7 +13,7 @@ router.post('/createUser',
     //checking for validations 
     [body('name', 'Enter valid name').isLength({ min: 3 }),
     body('email', 'Enter valid email').isEmail(),
-    body('password', 'Password must be 5 characters long').isLength({ min: 5 })],
+    body('password', 'Password must be 5 characters long').isLength({ min: 5 })], //validations are used
     async (req, res) => {
         // checking if any error occurs in validation
         const errors = validationResult(req);
@@ -23,7 +23,7 @@ router.post('/createUser',
         //creating user according to user schema
         // checking if a user with same email exists in User (database users)
         try {
-            let user = await User.findOne({ email: req.body.email });
+            let user = await User.findOne({ email: req.body.email });   //checking if user already exists with the email
             if (user) {
                 return res.status(400).json({ error: "Sorry a user with same email already exists" });
             }

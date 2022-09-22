@@ -5,7 +5,7 @@ import { useContext } from 'react';
 const Noteitem = (props) => {
     const context = useContext(NoteContext);
     const { deleteNote } = context;
-    const { note } = props;
+    const { note, updateNote } = props;
     return (
         <div className='col-md-3 my-3'>
             <div className="card">
@@ -14,7 +14,7 @@ const Noteitem = (props) => {
                     <p className="card-text">{note.description}</p>
                     <div className="d-flex align-items-center">
                         <i className="fa-solid fa-trash-can mx-2" onClick={() => { deleteNote(note._id) }}></i>
-                        <i className="fa-solid fa-square-pen mx-2"></i>
+                        <i className="fa-solid fa-square-pen mx-2" onClick={updateNote}></i>
                     </div>
                 </div>
             </div>
